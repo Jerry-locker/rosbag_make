@@ -21,14 +21,19 @@ int main(int argc, char** argv)
   rosbag::Bag newbag;
   newbag.open(TOBAG_PATH, rosbag::bagmode::Write);
 
-  ///save image to bag
-  std::string cam_data_csv = CAM_PATH + "/data.csv";
-  std::fstream cam_file(cam_data_csv);
+  ///save gsimage to bag
+  std::string gs_cam_data_csv = GS_CAM_PATH + "/data.csv";
+  std::fstream gs_cam_file(gs_cam_data_csv);
   //scan every line
-  std::string current_line_cam;
-  while (std::getline(cam_file, current_line_cam))
+  std::string gs_current_line_cam;
+  while (std::getline(gs_cam_file, gs_current_line_cam))
   {
-    std::stringstream sline(current_line_cam);
+    static int gscnt = 0;
+    gscnt++;
+    if (gscnt == 1)
+      continue;
+
+    std::stringstream sline(gs_current_line_cam);
     std::string element;
     std::vector<std::string> vec;
 
@@ -40,8 +45,9 @@ int main(int argc, char** argv)
     }
 
     assert(vec.size() == 2);
-    long timestamp = std::stol(vec[0]);
-    std::string pic_path = CAM_PATH + "/data/" + vec[1].substr(0, vec[1].size() - 1); //vec[1]尾部带有换行符
+    long timestamp = std::stol(vec[0]) + ros::TIME_MIN.toNSec();
+    //std::string pic_path = GS_CAM_PATH + "/img/" + vec[1].substr(0, vec[1].size() - 1); //vec[1]尾部带有换行符
+    std::string pic_path = GS_CAM_PATH + "/img/" + vec[1]; //vec[1]尾部带有换行符
 
     cv::Mat image = cv::imread(pic_path, cv::IMREAD_UNCHANGED); //不要改变通道数
     //std::cout << image.type() << std::endl;
@@ -52,13 +58,55 @@ int main(int argc, char** argv)
     }
     std_msgs::Header header;
     header.stamp = ros::Time().fromNSec(timestamp);
-    sensor_msgs::ImagePtr img_msg = cv_bridge::CvImage(header, "mono8", image).toImageMsg();
+    sensor_msgs::ImagePtr img_msg = cv_bridge::CvImage(header, "bgr8", image).toImageMsg();
 
-    newbag.write(IMAGE_TOPIC, img_msg->header.stamp, img_msg);
+    newbag.write(GS_IMAGE_TOPIC, img_msg->header.stamp, img_msg);
+  }
+
+  ///save rsimage to bag
+  std::string rs_cam_data_csv = RS_CAM_PATH + "/data.csv";
+  std::fstream rs_cam_file(rs_cam_data_csv);
+  //scan every line
+  std::string rs_current_line_cam;
+  while (std::getline(rs_cam_file, rs_current_line_cam))
+  {
+    static int gscnt = 0;
+    gscnt++;
+    if (gscnt == 1)
+      continue;
+
+    std::stringstream sline(rs_current_line_cam);
+    std::string element;
+    std::vector<std::string> vec;
+
+    while (std::getline(sline, element, ','))
+    {
+      if (element.empty())
+        continue;
+      vec.push_back(element);
+    }
+
+    assert(vec.size() == 2);
+    long timestamp = std::stol(vec[0]) + ros::TIME_MIN.toNSec();
+    //std::string pic_path = RS_CAM_PATH + "/img/" + vec[1].substr(0, vec[1].size() - 1); //vec[1]尾部带有换行符
+    std::string pic_path = RS_CAM_PATH + "/img/" + vec[1]; //vec[1]尾部带有换行符
+
+    cv::Mat image = cv::imread(pic_path, cv::IMREAD_UNCHANGED); //不要改变通道数
+    //std::cout << image.type() << std::endl;
+    if (image.data == nullptr)
+    {
+      std::cout << "文件" << pic_path << "不存在\n";
+      ros::shutdown();
+    }
+    std_msgs::Header header;
+    header.stamp = ros::Time().fromNSec(timestamp);
+    sensor_msgs::ImagePtr img_msg = cv_bridge::CvImage(header, "bgr8", image).toImageMsg();
+
+    newbag.write(RS_IMAGE_TOPIC, img_msg->header.stamp, img_msg);
   }
 
   ///save imu to bag
-  std::string imu_data_csv = IMU_PATH + "/data.csv";
+  std::string imu_data_csv = IMU_PATH + "/data-240Hz.csv";
   std::fstream imu_file(imu_data_csv);
   //scan every line
   std::string current_line_imu;
@@ -81,7 +129,7 @@ int main(int argc, char** argv)
     }
 
     assert(vec.size() == 7);
-    long timestamp = std::stol(vec[0]);
+    long timestamp = std::stol(vec[0]) + ros::TIME_MIN.toNSec();
 
     sensor_msgs::ImuPtr imu_msg(new sensor_msgs::Imu); //即使是ros的智能指针也要new
     imu_msg->header.stamp = ros::Time().fromNSec(timestamp);

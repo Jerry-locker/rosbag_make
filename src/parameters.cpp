@@ -1,9 +1,11 @@
 #include "parameters.h"
 
-std::string CAM_PATH;
+std::string GS_CAM_PATH;
+std::string RS_CAM_PATH;
 std::string IMU_PATH;
 
-std::string IMAGE_TOPIC;
+std::string GS_IMAGE_TOPIC;
+std::string RS_IMAGE_TOPIC;
 std::string IMU_TOPIC;
 std::string TOBAG_PATH;
 
@@ -33,10 +35,12 @@ void readParameters(ros::NodeHandle &n)
       std::cerr << "ERROR: Wrong path to settings" << std::endl;
   }
 
-  fsSettings["cam_path"] >> CAM_PATH;
+  fsSettings["gs_cam_path"] >> GS_CAM_PATH;
+  fsSettings["rs_cam_path"] >> RS_CAM_PATH;
   fsSettings["imu_path"] >> IMU_PATH;
 
-  fsSettings["image_topic"] >> IMAGE_TOPIC;
+  fsSettings["gs_image_topic"] >> GS_IMAGE_TOPIC;
+  fsSettings["rs_image_topic"] >> RS_IMAGE_TOPIC;
   fsSettings["imu_topic"] >> IMU_TOPIC;
   fsSettings["tobag_path"] >> TOBAG_PATH;
 }
