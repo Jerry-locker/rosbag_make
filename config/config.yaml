@@ -2,12 +2,29 @@
 #使用cvOpenFileStorage务必加在最顶上
 
 #from: euroc格式下mav0文件夹中的两个文件夹
-gs_cam_path: "/home/jerry/Dataset/WHU/trajectory_1/fast/gs/noise"
-rs_cam_path: "/home/jerry/Dataset/WHU/trajectory_1/fast/rs/noise"
-imu_path: "/home/jerry/Dataset/WHU/trajectory_1/fast/imu/data-360Hz.csv"
+gs_cam_path: "/home/jerry/Dataset/WHU/trajectory_2/fast/gs/noise"
+rs_cam_path: "/home/jerry/Dataset/WHU/trajectory_2/fast/rs/noise"
+imu90_path: "/home/jerry/Dataset/WHU/trajectory_2/fast/imu/data-90Hz.csv"
+imu120_path: "/home/jerry/Dataset/WHU/trajectory_2/fast/imu/data-120Hz.csv"
+imu150_path: "/home/jerry/Dataset/WHU/trajectory_2/fast/imu/data-150Hz.csv"
+imu180_path: "/home/jerry/Dataset/WHU/trajectory_2/fast/imu/data-180Hz.csv"
+imu240_path: "/home/jerry/Dataset/WHU/trajectory_2/fast/imu/data-240Hz.csv"
+imu300_path: "/home/jerry/Dataset/WHU/trajectory_2/fast/imu/data-300Hz.csv"
+imu360_path: "/home/jerry/Dataset/WHU/trajectory_2/fast/imu/data-360Hz.csv"
+imu480_path: "/home/jerry/Dataset/WHU/trajectory_2/fast/imu/data-480Hz.csv"
+imu600_path: "/home/jerry/Dataset/WHU/trajectory_2/fast/imu/data-600Hz.csv"
 
 #to
 gs_image_topic: "/cam_gs/image_raw"
 rs_image_topic: "/cam_rs/image_raw"
-imu_topic: "/imu0"
-tobag_path: "/home/jerry/fast1-360Hz.bag"
+imu90_topic: "/imu90"
+imu120_topic: "/imu120"
+imu150_topic: "/imu150"
+imu180_topic: "/imu180"
+imu240_topic: "/imu240"
+imu300_topic: "/imu300"
+imu360_topic: "/imu360"
+imu480_topic: "/imu480"
+imu600_topic: "/imu600"
+
+tobag_path: "/home/jerry/fast2.bag"
