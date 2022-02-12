@@ -59,6 +59,7 @@ int main(int argc, char** argv)
     std_msgs::Header header;
     header.stamp = ros::Time().fromNSec(timestamp);
     sensor_msgs::ImagePtr img_msg = cv_bridge::CvImage(header, "bgr8", image).toImageMsg();
+    //sensor_msgs::ImagePtr img_msg = cv_bridge::CvImage(header, "mono8", image).toImageMsg();
 
     newbag.write(GS_IMAGE_TOPIC, img_msg->header.stamp, img_msg);
   }
@@ -101,12 +102,13 @@ int main(int argc, char** argv)
     std_msgs::Header header;
     header.stamp = ros::Time().fromNSec(timestamp);
     sensor_msgs::ImagePtr img_msg = cv_bridge::CvImage(header, "bgr8", image).toImageMsg();
+    //sensor_msgs::ImagePtr img_msg = cv_bridge::CvImage(header, "mono8", image).toImageMsg();
 
     newbag.write(RS_IMAGE_TOPIC, img_msg->header.stamp, img_msg);
   }
 
   ///save imu to bag
-  std::string imu_data_csv = IMU_PATH + "/data-240Hz.csv";
+  std::string imu_data_csv = IMU_PATH;
   std::fstream imu_file(imu_data_csv);
   //scan every line
   std::string current_line_imu;

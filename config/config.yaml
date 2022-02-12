@@ -2,12 +2,12 @@
 #使用cvOpenFileStorage务必加在最顶上
 
 #from: euroc格式下mav0文件夹中的两个文件夹
-gs_cam_path: "/home/jerry/trajectory_1/fast/gs/clean"
-rs_cam_path: "/home/jerry/trajectory_1/fast/rs/clean"
-imu_path: "/home/jerry/trajectory_1/fast/imu"
+gs_cam_path: "/home/jerry/Dataset/WHU/trajectory_1/fast/gs/noise"
+rs_cam_path: "/home/jerry/Dataset/WHU/trajectory_1/fast/rs/noise"
+imu_path: "/home/jerry/Dataset/WHU/trajectory_1/fast/imu/data-360Hz.csv"
 
 #to
 gs_image_topic: "/cam_gs/image_raw"
 rs_image_topic: "/cam_rs/image_raw"
 imu_topic: "/imu0"
-tobag_path: "/home/jerry/new.bag"
+tobag_path: "/home/jerry/fast1-360Hz.bag"
